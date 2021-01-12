@@ -1,0 +1,18 @@
+<form [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+	<div class="card text-center">
+		<img src="/assets/images/image.jpg" class="card-img-top" alt="image">
+		<div class="card-body">
+			<h4 class="card-title">Welcome to Inellipse</h4>
+			<p class="card-text">Please enter your name bellow</p>
+			<div class="form-floating">
+				<input type="username" class="form-control" id="username" formControlName="username">
+				<label for="username">Name</label>
+			</div>
+			<p *ngIf="error" class="error">
+				{{ error }}
+			</p>
+			<button type="submit" class="btn btn-outline-secondary">Start the quiz</button>
+			<p class="card-text"><small>You have 90 seconds to finish the quiz</small></p>
+		</div>
+	</div>
+</form>
