@@ -1,3 +1,17 @@
 <div class="container">
 	<router-outlet></router-outlet>
+
+	<div style="width: 300px;">
+		<form (ngSubmit)="onSubmit()">
+			<div class="form-group">
+				<label for="item">Item</label>
+				<input type="text" class="form-control" placeholder="Enter content..." id="item" required
+					[(ngModel)]="itemValue" name="item">
+			</div>
+		</form>
+	</div>
+	<h2>Leaderboard</h2>
+	<div class="col-md-3">
+		<pre *ngFor="let item of items | async">{{item.content}}</pre>
+	</div>
 </div>
