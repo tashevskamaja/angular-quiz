@@ -6,12 +6,12 @@ import { FormGroup, FormControl } from "@angular/forms";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
-  Username: string =  "Dummy"
+  Username: string = "Dummy";
   form: FormGroup = new FormGroup({
-    username: new FormControl("")
+    username: new FormControl(""),
   });
   constructor(private _router: Router, private _store: StorageService) {}
   ngOnInit() {

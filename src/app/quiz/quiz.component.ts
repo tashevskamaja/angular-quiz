@@ -8,13 +8,14 @@ import { StorageService } from "../services/storage.service";
   selector: "app-quiz",
   templateUrl: "./quiz.component.html",
   styleUrls: ["./quiz.component.css"],
-  providers: [QuizService]
+  providers: [QuizService],
 })
 export class QuizComponent implements OnInit {
   quizes: any[];
   quiz: Quiz = new Quiz(null);
   mode = "quiz";
   quizName: string;
+  correctAnswers = 0;
   config: QuizConfig = {
     allowBack: false,
     allowReview: false,
@@ -27,21 +28,26 @@ export class QuizComponent implements OnInit {
     shuffleOptions: false,
     showClock: false,
     showPager: true,
-    theme: "none"
+    theme: "none",
   };
 
   pager = {
     index: 0,
     size: 1,
-    count: 1
+    count: 1,
   };
   timer: any = null;
   startTime: Date;
   endTime: Date;
   ellapsedTime = "00:00";
   duration = "";
+  leaderboardData: any;
 
-  constructor(private quizService: QuizService, private _router: Router,private _store: StorageService) {}
+  constructor(
+    private quizService: QuizService,
+    private _router: Router,
+    private _store: StorageService
+  ) {}
 
   ngOnInit() {
     this.quizes = this.quizService.getAll();
@@ -90,7 +96,7 @@ export class QuizComponent implements OnInit {
 
   onSelect(question: Question, option: Option) {
     if (question.questionTypeId === 1) {
-      question.options.forEach(x => {
+      question.options.forEach((x) => {
         if (x.id !== option.id) x.selected = false;
       });
     }
@@ -108,28 +114,48 @@ export class QuizComponent implements OnInit {
   }
 
   isAnswered(question: Question) {
-    return question.options.find(x => x.selected) ? "Answered" : "Not Answered";
+    return question.options.find((x) => x.selected)
+      ? "Answered"
+      : "Not Answered";
   }
 
   isCorrect(question: Question) {
-    return question.options.every(x => x.selected === x.isAnswer)
-      ? "correct"
-      : "wrong";
+    console.log(question);
+    if (question.options.every((x) => x.selected === x.isAnswer)) {
+      console.log("Correct answer!");
+      this.correctAnswers++;
+    }
   }
 
-  onSubmit() {
+  savePlayerScoreToDb() {
+    let playerScoreData = {
+      name: this._store.sessionUsername,
+      correctAnswers: this.correctAnswers,
+      totalSeconds: this.ellapsedTime,
+    };
+    this.quizService.submitDataToLeaderboard(playerScoreData).then((res) => {});
     let answers = [];
-    this.quiz.questions.forEach(x =>
+    this.quiz.questions.forEach((x) =>
       answers.push({
         quizId: this.quiz.id,
         questionId: x.id,
-        answered: x.answered
+        answered: x.answered,
       })
     );
+  }
+  loadPlayerLeaderboard() {
+    this.quizService
+      .readLeaderboard()
+      .subscribe((res) => (this.leaderboardData = res));
+  }
 
+  onSubmit() {
+    this.savePlayerScoreToDb();
+    this.loadPlayerLeaderboard();
     // Post your data to the server here. answers contains the questionId and the users' answer.
     this.mode = "result";
   }
+
   @HostListener("window:focus", ["$event"])
   onFocus(event: any): void {
     //console.log("On Focus");
@@ -142,4 +168,3 @@ export class QuizComponent implements OnInit {
   @HostListener("window:beforeunload", ["$event"])
   unloadNotification($event: any) {}
 }
-

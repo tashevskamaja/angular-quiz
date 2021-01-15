@@ -5,14 +5,13 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyCxM0QExVRfRBjz6gYbdYHV95QW-h93B68",
-    authDomain: "angularquiz-5fa9d.firebaseapp.com",
-    databaseURL: "https://angularquiz-5fa9d-default-rtdb.firebaseio.com",
-    projectId: "angularquiz-5fa9d",
-    storageBucket: "angularquiz-5fa9d.appspot.com",
-    messagingSenderId: "332074973005",
-    appId: "1:332074973005:web:c8a74c6cea39f93353a904",
-    measurementId: "G-SJNNKRPKD4"
+    apiKey: "AIzaSyBqpFyxoUmaO4Bom8yNP_xNdXzFRIeTRMk",
+    authDomain: "angular-test-c3aab.firebaseapp.com",
+    projectId: "angular-test-c3aab",
+    storageBucket: "angular-test-c3aab.appspot.com",
+    messagingSenderId: "386035974429",
+    appId: "1:386035974429:web:72c72072f95b2f5549e1f4",
+    measurementId: "G-TGJNX84FXG"
   }
 };
 
